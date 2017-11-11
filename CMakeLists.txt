@@ -1,0 +1,34 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.4.0)
+CMAKE_POLICY(SET CMP0071 NEW)
+
+PROJECT(qt-async-test)
+
+
+SET(CMAKE_AUTOMOC ON)
+SET(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+
+IF(WIN32 AND NOT CMAKE_PREFIX_PATH)
+    MESSAGE(WARNING
+        "CMake variable CMAKE_PREFIX_PATH not set."
+        " Pass this variable to cmake call with '-DCMAKE_PREFIX_PATH=/path/to/qt' argument."
+        " Where '/path/to/qt' points to Qt installation cmake library path. Something like:\n"
+        "  C:/Qt/5.8.0/5.8/msvc2015_64/lib/cmake"
+    )
+ENDIF()
+
+FIND_PACKAGE(Qt5 REQUIRED COMPONENTS Core)
+
+
+FILE(GLOB SOURCES FOLLOW_SYMLINKS src/*.cpp src/*.h)
+
+
+ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES})
+TARGET_COMPILE_FEATURES(${PROJECT_NAME} PRIVATE cxx_std_11)
+IF(UNIX)
+    TARGET_COMPILE_OPTIONS(${PROJECT_NAME} BEFORE PRIVATE -fPIC)
+ENDIF()
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Qt5::Core)
+IF(MSVC)
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE Winmm)
+ENDIF()
