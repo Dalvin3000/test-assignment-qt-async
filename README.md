@@ -38,7 +38,7 @@ Dependencies for all platforms:
 * [Qt 5 framework](http://qt.io/download/)
 
 To build this project you can use a tool by your choice:
-* Microsoft SDK 7.1+
+* Windows SDK 7.1+
 * GNU GCC 6.3+.
 
 ### Linux
